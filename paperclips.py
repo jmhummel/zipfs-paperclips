@@ -47,6 +47,14 @@ def main():
 	num_paperclips = int(sys.argv[1])
 	iterations = int(sys.argv[2])
 
+	print "num_paperclips : " + str(num_paperclips)
+	print "iterations : " + str(iterations)
+	print "--------------------"
+
+	if iterations >= num_paperclips:
+		print "too many iterations, choose a number less than number of paperclips"
+		return
+
 	paperclips_list = []
 
 	for id_ in range(0, num_paperclips):

@@ -13,6 +13,9 @@ Example
 
     $python paperclips.py 8 4
     
+    num_paperclips : 8
+    iterations : 4
+    --------------------
     Got 6 and 3
     New chain : 6 3
     0 : 0
