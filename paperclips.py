@@ -51,6 +51,16 @@ def main():
 	print "iterations : " + str(iterations)
 	print "--------------------"
 
+	if num_paperclips < 1:
+		print "addition paperclips required"
+		print "(1st arg must be >0)"
+		return
+
+	if iterations < 0:
+		print "are you asking me to do this negative times? I can't even..."
+		print "(2nd arg must be >=0)"
+		return
+
 	if iterations >= num_paperclips:
 		print "too many iterations, choose a number less than number of paperclips"
 		return
@@ -69,7 +79,10 @@ def main():
 
 		print ""
 
-	
+	if iterations == 0:
+		for id_ in range(0, len(paperclips_list)):
+			print paperclips_list[id_]
+
 
 if __name__ == "__main__":
     main()
