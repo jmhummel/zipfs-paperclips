@@ -31,17 +31,41 @@ def pick2(paperclips_list):
 
 	return (paperclip1, paperclip2)
 
-def link(clips):
+def link(clips, chain_list):
 	paperclip1 = clips[0]
 	paperclip2 = clips[1]
+
+	chain_list.remove(paperclip1.chain)
+	chain_list.remove(paperclip2.chain)
+
 	paperclip1.chain.extend(paperclip2.chain)
 	for paperclip in paperclip1.chain:
 		paperclip.chain = paperclip1.chain
+
+	chain_list.append(paperclip1.chain)
+
 	print "New chain : " + paperclip1.print_chain()
+
+def validate_input(num_paperclips, iterations):
+	if num_paperclips < 1:
+		print "addition paperclips required"
+		print "(1st arg must be >0)"
+		sys.exit(0)
+
+	if iterations < 0:
+		print "are you asking me to do this negative times? I can't even..."
+		print "(2nd arg must be >=0)"
+		sys.exit(0)
+
+	if iterations >= num_paperclips:
+		print "too many iterations, choose a number less than number of paperclips"
+		sys.exit(0)
+
 
 def main():
 	if len(sys.argv) < 3:
 		print "we require more arguments"
+		print "(at least two)"
 		return
 
 	num_paperclips = int(sys.argv[1])
@@ -51,28 +75,19 @@ def main():
 	print "iterations : " + str(iterations)
 	print "--------------------"
 
-	if num_paperclips < 1:
-		print "addition paperclips required"
-		print "(1st arg must be >0)"
-		return
-
-	if iterations < 0:
-		print "are you asking me to do this negative times? I can't even..."
-		print "(2nd arg must be >=0)"
-		return
-
-	if iterations >= num_paperclips:
-		print "too many iterations, choose a number less than number of paperclips"
-		return
+	validate_input(num_paperclips, iterations)
 
 	paperclips_list = []
+	chain_list = []
 
 	for id_ in range(0, num_paperclips):
-		paperclips_list.append(Paperclip(id_))
+		paperclip = Paperclip(id_)
+		paperclips_list.append(paperclip)
+		chain_list.append(paperclip.chain)
 
 	for n in range(0, iterations):
 		clips = pick2(paperclips_list)
-		link(clips)
+		link(clips, chain_list)
 
 		for id_ in range(0, len(paperclips_list)):
 			print paperclips_list[id_]
@@ -82,6 +97,8 @@ def main():
 	if iterations == 0:
 		for id_ in range(0, len(paperclips_list)):
 			print paperclips_list[id_]
+
+	print chain_list
 
 
 if __name__ == "__main__":
