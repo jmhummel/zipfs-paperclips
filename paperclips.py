@@ -70,6 +70,7 @@ def validate_input(num_paperclips, iterations):
 		sys.exit(0)
 
 
+
 def main():
 	if len(sys.argv) < 3:
 		print "we require more arguments"
@@ -118,6 +119,8 @@ def main():
 
 	# print "Chains: "
 	# print "keys : " + str(keys)
+
+	print "length : frequency"
 
 
 	for key in keys:
