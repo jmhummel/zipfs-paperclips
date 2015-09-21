@@ -69,23 +69,7 @@ def validate_input(num_paperclips, iterations):
 		print "too many iterations, choose a number less than number of paperclips"
 		sys.exit(0)
 
-
-
-def main():
-	if len(sys.argv) < 3:
-		print "we require more arguments"
-		print "(at least two)"
-		return
-
-	num_paperclips = int(sys.argv[1])
-	iterations = int(sys.argv[2])
-
-	print "num_paperclips : " + str(num_paperclips)
-	print "iterations : " + str(iterations)
-	print "--------------------"
-
-	validate_input(num_paperclips, iterations)
-
+def run(num_paperclips, iterations):
 	paperclips_list = []
 	chain_list = []
 
@@ -120,16 +104,72 @@ def main():
 	# print "Chains: "
 	# print "keys : " + str(keys)
 
+	results = {}
+
 	print "length : frequency"
 
 
 	for key in keys:
+		results[key] = len(chain_map[key])
 		print str(key) + " : " + str(len(chain_map[key]))
+
+
+
 
 	# print "Chains: "
 	# chain_list.sort(key = lambda l: len(l), reverse = True)
 	# for chain in chain_list:
 	# 	print chain
+	return results
+
+
+def main():
+	if len(sys.argv) < 3:
+		print "we require more arguments"
+		print "(at least two)"
+		return
+
+	num_paperclips = int(sys.argv[1])
+	iterations = int(sys.argv[2])
+	if len(sys.argv) >= 4:
+		num_tests = int(sys.argv[3])
+	else:
+		num_tests = 1
+
+	print "num_paperclips : " + str(num_paperclips)
+	print "iterations : " + str(iterations)
+	print "num_tests : " + str(num_tests)
+	
+
+	validate_input(num_paperclips, iterations)
+
+	sum_frequencies_map = {}
+
+	for i in range(0, num_tests):
+		print "--------------------"
+		print "test #" + str(i+1)
+		results = run(num_paperclips, iterations)
+		for key in results.keys():
+			if key in sum_frequencies_map:
+				sum_frequencies_map[key] += results[key]
+			else:
+				sum_frequencies_map[key] = results[key]
+
+	print "--------------------"			
+	print "sums"
+	for key in sorted(sum_frequencies_map.keys(), reverse=True):
+		print str(key) + " : " + str(sum_frequencies_map[key])	
+
+
+	mean_frequencies_map = {}
+	for key in sum_frequencies_map.keys():
+		mean_frequencies_map[key] = sum_frequencies_map[key] / float(num_tests)
+
+
+	print "--------------------"
+	print "mean"
+	for key in sorted(mean_frequencies_map.keys(), reverse=True):
+		print str(key) + " : " + str(mean_frequencies_map[key])	
 
 
 if __name__ == "__main__":
