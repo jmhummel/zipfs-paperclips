@@ -2,6 +2,7 @@
 
 import sys
 import random
+import argparse
 
 class Paperclip:
 	def __init__(self, id_):
@@ -124,6 +125,9 @@ def run(num_paperclips, iterations):
 
 
 def main():
+
+
+
 	if len(sys.argv) < 3:
 		print "we require more arguments"
 		print "(at least two)"
@@ -171,6 +175,10 @@ def main():
 	for key in sorted(mean_frequencies_map.keys(), reverse=True):
 		print str(key) + " : " + str(mean_frequencies_map[key])	
 
+	print "--------------------"
+	print "expectation"
+	for key in sorted(mean_frequencies_map.keys(), reverse=True):
+		print str(key) + " : " + str(mean_frequencies_map[key] * key)	
 
 if __name__ == "__main__":
     main()
