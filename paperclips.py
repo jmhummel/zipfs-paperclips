@@ -17,6 +17,12 @@ class Paperclip:
 			s = s + str(paperclip.id_) + " "
 		return s
 
+	def get_chain_list(self):
+		chain = []
+		for paperclip in self.chain:
+			chain.append(paperclip.id_)
+		return chain
+
 def pick(paperclips_list):
 	return random.choice(paperclips_list)
 
@@ -27,7 +33,7 @@ def pick2(paperclips_list):
 	while paperclip1.chain == paperclip2.chain:
 		paperclip2 = pick(paperclips_list)
 
-	print "Got " + str(paperclip1.id_) + " and " + str(paperclip2.id_)
+	# print "Got " + str(paperclip1.id_) + " and " + str(paperclip2.id_)
 
 	return (paperclip1, paperclip2)
 
@@ -35,16 +41,18 @@ def link(clips, chain_list):
 	paperclip1 = clips[0]
 	paperclip2 = clips[1]
 
-	chain_list.remove(paperclip1.chain)
-	chain_list.remove(paperclip2.chain)
+	chain_list.remove(paperclip1.get_chain_list())
+	chain_list.remove(paperclip2.get_chain_list())
 
 	paperclip1.chain.extend(paperclip2.chain)
 	for paperclip in paperclip1.chain:
 		paperclip.chain = paperclip1.chain
 
-	chain_list.append(paperclip1.chain)
+	chain_list.append(paperclip1.get_chain_list())
 
-	print "New chain : " + paperclip1.print_chain()
+	# print "chain : " + str(paperclip1.get_chain_list())
+
+	# print "New chain : " + paperclip1.print_chain()
 
 def validate_input(num_paperclips, iterations):
 	if num_paperclips < 1:
@@ -83,22 +91,42 @@ def main():
 	for id_ in range(0, num_paperclips):
 		paperclip = Paperclip(id_)
 		paperclips_list.append(paperclip)
-		chain_list.append(paperclip.chain)
+		chain_list.append(paperclip.get_chain_list())
 
 	for n in range(0, iterations):
 		clips = pick2(paperclips_list)
 		link(clips, chain_list)
 
-		for id_ in range(0, len(paperclips_list)):
-			print paperclips_list[id_]
+		# for id_ in range(0, len(paperclips_list)):
+		# 	print paperclips_list[id_]
 
-		print ""
+		# print ""
 
-	if iterations == 0:
-		for id_ in range(0, len(paperclips_list)):
-			print paperclips_list[id_]
+	# if iterations == 0:
+	# 	for id_ in range(0, len(paperclips_list)):
+	# 		print paperclips_list[id_]
 
-	print chain_list
+	chain_map = {}
+	for chain in chain_list:
+		key = len(chain)
+		if key not in chain_map:
+			chain_map[key] = []
+
+		chain_map[key].append(chain)
+
+	keys = sorted(chain_map.keys(), reverse=True)
+
+	# print "Chains: "
+	# print "keys : " + str(keys)
+
+
+	for key in keys:
+		print str(key) + " : " + str(len(chain_map[key]))
+
+	# print "Chains: "
+	# chain_list.sort(key = lambda l: len(l), reverse = True)
+	# for chain in chain_list:
+	# 	print chain
 
 
 if __name__ == "__main__":
